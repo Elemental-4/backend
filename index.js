@@ -15,6 +15,8 @@ app.get("/", (req, res) => {
     return res.send("ahoj");
 });
 
+app.use(require("./auth").app);
+
 app.all("/*", function (req, res, next) {
 	logger.error(req.method + " " + req.originalUrl, req);
 	res.status(400);
