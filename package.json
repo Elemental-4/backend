@@ -1,0 +1,19 @@
+{
+  "name": "elements-4",
+  "version": "1.0.0",
+  "description": "Just like elements 3 but better",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "author": "Elements 4 Dev Team - honzapat_CZ",
+  "license": "MIT AND CC-BY-3.0",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "colors": "^1.4.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "nanoid": "^3.1.12"
+  }
+}
