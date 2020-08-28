@@ -1,13 +1,12 @@
 var express = require("express");
 var jwt = require("jsonwebtoken");
 var crypto = require("crypto");
-var nanoid = require("nanoid");
-var db = require("./db");
 var fs = require("fs");
 
 var app = express();
 
 var logger = require("./logger");
+var db = require("./db");
 
 var key = fs.readFileSync('crt/jwt.key');
 var pem = fs.readFileSync('crt/jwt.pem');
@@ -50,8 +49,8 @@ function Register(name, email, password, cb){
     if(name.length > 32){
         return cb({status: "error", error: "name too long"});
     }
-    account = new User(name, email, crypto.createHash("sha512").update(password).digest("hex"));
-    User.insert(account, (err, dbRes)=>{
+    var account = new User(name, email, crypto.createHash("sha512").update(password).digest("hex"));
+    User.insert(account, (err)=>{
         if(err)
         {
             return cb({status: "error", error: err});
@@ -67,7 +66,7 @@ function Login(email, password, cb){
         {
             return cb({status: "error", error: err});
         }
-        dbRes = res[0];
+        var dbRes = res[0];
         if(!dbRes){
             return cb({status: "error", error: "account not found"});
         }
@@ -114,7 +113,7 @@ var authMid = function (req, res, next) {
     if(!req.headers.authorization){
         return res.send(JSON.stringify({status: "error", error: "token not provided"}));
     }
-    authed = Authorized(req.headers.authorization);
+    var authed = Authorized(req.headers.authorization);
     if(authed.status == "ok"){
         return res.send(JSON.stringify(authed));
     }
@@ -129,5 +128,6 @@ var authMid = function (req, res, next) {
 module.exports = {
     authMid,
     Authorized,
-	app
+    app,
+    User
 };
