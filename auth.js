@@ -19,7 +19,7 @@ class User {
 
 	static insert (newTask, result) {
 		db.GetConnection((connection) => {
-			connection.query("INSERT INTO users SET ?", newTask, function (err, res) {
+			connection.query("INSERT INTO users SET ?", newTask, (err, res) => {
 				if (err) {
 					logger.error("error: " + err)
 					result(err, null)
@@ -35,7 +35,7 @@ class User {
 		email = email.toLowerCase();
 
 		db.GetConnection((connection) => {
-			connection.query("SELECT * FROM users WHERE email = ? AND password = ?", [email, passwordHash], function (err, res) {
+			connection.query("SELECT * FROM users WHERE email = ? AND password = ?", [email, passwordHash], (err, res) => {
 				if (err) {
 					logger.error("error: " + err)
 					result(err, null)
@@ -100,12 +100,12 @@ app.post("/register", (req, res) => {
 		return res.send(JSON.stringify({ status: "error", error: "password or name or email name not provided" }))
 	}
 	Register(req.body.name, req.body.email, req.body.password, (threRes) => {
-		return res.send(JSON.stringify(threRes))
-	})
-})
+		return res.send(JSON.stringify(threRes));
+	});
+});
 
-var authMid = function(errorOnNotAuthed = true){
-	return function (req, res, next) {
+var authMid = (errorOnNotAuthed = true) => {
+	return (req, res, next) => {
 		logger.reqInfo(req)
   
 		if (!req.headers.authorization || !req.headers.authorization.split(' ')[1]) {

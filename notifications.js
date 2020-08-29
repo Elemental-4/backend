@@ -11,7 +11,7 @@ app.ws("/notifications", (ws, req) => {
 
 // Let all dashboard clients know.
 function NotifyDashboard(data) {
-	expressWs.getWss("/notifications").clients.forEach(function each(client) {
+	expressWs.getWss("/notifications").clients.forEach((client) => {
 		if (client.readyState === WebSocket.OPEN) {
 			client.send(data);
 		}

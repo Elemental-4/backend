@@ -9,7 +9,7 @@ var mysql_pool = mysql.createPool({
 });
 
 function GetConnection(toDo) {
-	mysql_pool.getConnection(function (err, connection) {
+	mysql_pool.getConnection((err, connection) => {
 		if (err) {
 			console.log(" Error getting mysql_pool connection: " + err);
 			throw err;
