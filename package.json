@@ -1,29 +1,29 @@
 {
-  "name": "elements-4",
-  "version": "1.0.0",
-  "description": "Just like elements 3 but better",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ."
-  },
-  "author": "Elements 4 Dev Team - honzapat_CZ",
-  "license": "MIT AND CC-BY-3.0",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "colors": "^1.4.0",
-    "express": "^4.17.1",
-    "express-ws": "^4.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
-    "nanoid": "^3.1.12"
-  },
-  "devDependencies": {
-    "eslint": "^7.7.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1"
-  }
+	"name": "elements-4",
+	"version": "1.0.0",
+	"description": "Just like elements 3 but better",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node ."
+	},
+	"author": "Elements 4 Dev Team - honzapat_CZ",
+	"license": "MIT AND CC-BY-3.0",
+	"dependencies": {
+		"body-parser": "^1.19.0",
+		"colors": "^1.4.0",
+		"express": "^4.17.1",
+		"express-ws": "^4.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"mysql": "^2.18.1",
+		"nanoid": "^3.1.12"
+	},
+	"devDependencies": {
+		"eslint": "^7.7.0",
+		"eslint-config-standard": "^14.1.1",
+		"eslint-plugin-import": "^2.22.0",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-promise": "^4.2.1",
+		"eslint-plugin-standard": "^4.0.1"
+	}
 }
