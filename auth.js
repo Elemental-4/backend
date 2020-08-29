@@ -13,8 +13,8 @@ var pem = fs.readFileSync("crt/jwt.pem")
 
 class User {
   constructor (name, email, passwordHash) {
-    this.name = name
-    this.email = email
+    this.name = name.toLowerCase();
+    this.email = email.toLowerCase();
     this.password = passwordHash
   }
 
@@ -32,6 +32,9 @@ class User {
   }
 
   static tryLogin (email, passwordHash, result) {
+    
+    email = email.toLowerCase();
+
     db.GetConnection((connection) => {
       connection.query("SELECT * FROM users WHERE email = ? AND password = ?", [email, passwordHash], function (err, res) {
         if (err) {
@@ -102,20 +105,32 @@ app.post("/register", (req, res) => {
   })
 })
 
-var authMid = function (req, res, next) {
-  logger.reqInfo(req)
-
-  if (!req.headers.authorization) {
-    return res.send(JSON.stringify({ status: "error", error: "token not provided" }))
-  }
-  var authed = Authorized(req.headers.authorization)
-  if (authed.status == "ok") {
-    return res.send(JSON.stringify(authed))
-  } else {
-    req.token = req.headers.authorization
-    req.userId = authed.id
-    req.userName = authed.name
-    next()
+var authMid = function(errorOnNotAuthed = true){
+  return function (req, res, next) {
+    logger.reqInfo(req)
+  
+    if (!req.headers.authorization) {
+      if(errorOnNotAuthed){        
+        return res.send(JSON.stringify({ status: "error", error: "token not provided" }))
+      }
+      else{
+        return next();
+      }
+    }
+    var authed = Authorized(req.headers.authorization)
+    if (authed.status == "ok") {
+      if(errorOnNotAuthed){
+        return res.send(JSON.stringify(authed))
+      }
+      else{
+        return next();
+      }
+    } else {
+      req.token = req.headers.authorization
+      req.userId = authed.id
+      req.userName = authed.name
+      return next()
+    }
   }
 }
 

@@ -16,7 +16,8 @@
     "express-ws": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
-    "nanoid": "^3.1.12"
+    "nanoid": "^3.1.12",
+    "startcase": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^7.7.0",
