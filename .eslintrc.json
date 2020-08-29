@@ -26,6 +26,7 @@
 			"error",
 			"tab"
 		],
-		"no-unused-vars": "warn"
+		"no-unused-vars": "warn",
+		"prefer-arrow-callback": "error"
 	}
 }

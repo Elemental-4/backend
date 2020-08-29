@@ -20,7 +20,7 @@ class User {
 
 	static insert(newTask, result) {
 		db.GetConnection((connection) => {
-			connection.query("INSERT INTO users SET ?", newTask, function (err, res) {
+			connection.query("INSERT INTO users SET ?", newTask, (err, res) => {
 				if (err) {
 					logger.error("error: " + err);
 					result(err, null);
@@ -33,7 +33,7 @@ class User {
 
 	static tryLogin(email, passwordHash, result) {
 		db.GetConnection((connection) => {
-			connection.query("SELECT * FROM users WHERE email = ? AND password = ?", [email, passwordHash], function (err, res) {
+			connection.query("SELECT * FROM users WHERE email = ? AND password = ?", [email, passwordHash], (err, res) => {
 				if (err) {
 					logger.error("error: " + err);
 					result(err, null);
