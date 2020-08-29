@@ -10,6 +10,8 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(bodyParser.text());
 
+app.use(require("./auth").authMid(false));
+
 app.get("/", (req, res) => {
 	logger.reqInfo(req);
 	return res.send("ahoj");
