@@ -10,7 +10,6 @@ var db = require("./db")
 
 var key = fs.readFileSync("crt/jwt.key")
 var pem = fs.readFileSync("crt/jwt.pem")
-
 class User {
 	constructor (name, email, passwordHash) {
 		this.name = name.toLowerCase();
@@ -71,17 +70,17 @@ function Login (email, password, cb) {
 		}
 
 		var payload = { sub: dbRes.id, name: dbRes.name, email: dbRes.email }
-		var token = jwt.sign(payload, key)
+		var token = jwt.sign(payload, key, {algorithm: "RS256"})
 		logger.success("Logged in user: " + dbRes.name)
 		return cb({ status: "ok", token: token })
 	})
 }
-function Authorized (theToken) {
+function Authorized (theToken, cb) {
 	jwt.verify(theToken, pem, (err, decoded) => {
 		if (err) {
-			return { status: "error", error: "token invalid" }
+			return cb({ status: "error", error: "token invalid" })
 		}
-		return { status: "ok", id: decoded.id, name: decoded.name }
+		return cb({ status: "ok", id: decoded.sub, name: decoded.name })
 	})
 }
 
@@ -109,7 +108,7 @@ var authMid = function(errorOnNotAuthed = true){
 	return function (req, res, next) {
 		logger.reqInfo(req)
   
-		if (!req.headers.authorization) {
+		if (!req.headers.authorization || !req.headers.authorization.split(' ')[1]) {
 			if(errorOnNotAuthed){        
 				return res.send(JSON.stringify({ status: "error", error: "token not provided" }))
 			}
@@ -117,20 +116,22 @@ var authMid = function(errorOnNotAuthed = true){
 				return next();
 			}
 		}
-		var authed = Authorized(req.headers.authorization)
-		if (authed.status == "ok") {
-			if(errorOnNotAuthed){
-				return res.send(JSON.stringify(authed))
+		var token = req.headers.authorization.split(' ')[1];
+		Authorized(token, (authed) =>{
+			if (authed.status != "ok") {
+				if(errorOnNotAuthed){
+					return res.send(JSON.stringify(authed))
+				}
+				else{
+					return next();
+				}
+			} else {
+				req.token = token
+				req.userId = authed.id
+				req.userName = authed.name
+				return next()
 			}
-			else{
-				return next();
-			}
-		} else {
-			req.token = req.headers.authorization
-			req.userId = authed.id
-			req.userName = authed.name
-			return next()
-		}
+		})
 	}
 }
 
