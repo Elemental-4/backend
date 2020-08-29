@@ -19,7 +19,7 @@ app.use(require("./auth").app);
 app.use(require("./notifications").app);
 app.use(require("./element").app);
 
-app.all("/*", function (req, res, next) {
+app.all("/*", (req, res, next) => {
 	logger.error(req.method + " " + req.originalUrl, req);
 	res.status(400);
 	return res.send("not implemented yet sorry");

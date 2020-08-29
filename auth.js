@@ -102,7 +102,7 @@ app.post("/register", (req, res) => {
 	});
 });
 
-var authMid = function (req, res, next) {
+var authMid = (req, res, next) => {
 	logger.reqInfo(req);
 
 	if (!req.headers.authorization) {
