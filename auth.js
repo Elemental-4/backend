@@ -102,22 +102,34 @@ app.post("/register", (req, res) => {
 	});
 });
 
-var authMid = (req, res, next) => {
-	logger.reqInfo(req);
-
-	if (!req.headers.authorization) {
-		return res.send(JSON.stringify({ status: "error", error: "token not provided" }));
+var authMid = (errorOnNotAuthed = true) => {
+	return (req, res, next) => {
+		logger.reqInfo(req)
+  
+		if (!req.headers.authorization) {
+			if(errorOnNotAuthed){        
+				return res.send(JSON.stringify({ status: "error", error: "token not provided" }))
+			}
+			else{
+				return next();
+			}
+		}
+		var authed = Authorized(req.headers.authorization)
+		if (authed.status == "ok") {
+			if(errorOnNotAuthed){
+				return res.send(JSON.stringify(authed))
+			}
+			else{
+				return next();
+			}
+		} else {
+			req.token = req.headers.authorization
+			req.userId = authed.id
+			req.userName = authed.name
+			return next()
+		}
 	}
-	var authed = Authorized(req.headers.authorization);
-	if (authed.status == "ok") {
-		return res.send(JSON.stringify(authed));
-	} else {
-		req.token = req.headers.authorization;
-		req.userId = authed.id;
-		req.userName = authed.name;
-		next();
-	}
-};
+}
 
 module.exports = {
 	authMid,
