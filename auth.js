@@ -88,29 +88,28 @@ app.post("/login", (req, res) => {
 	logger.reqInfo(req)
 
 	if (!req.body.email || !req.body.password) {
-		return res.send(JSON.stringify({ status: "error", error: "password and/or email not provided" }))
+		return res.send({ status: "error", error: "password and/or email not provided" })
 	}
 	Login(req.body.email, req.body.password, (threRes) => {
-		return res.send(JSON.stringify(threRes))
+		return res.send(threRes)
 	})
 })
 app.post("/register", (req, res) => {
 	logger.reqInfo(req)
 	if (!req.body.name || !req.body.password || !req.body.email) {
-		return res.send(JSON.stringify({ status: "error", error: "password or name or email name not provided" }))
+		return res.send({ status: "error", error: "password or name or email name not provided" })
 	}
 	Register(req.body.name, req.body.email, req.body.password, (threRes) => {
-		return res.send(JSON.stringify(threRes));
+		return res.send(threRes);
 	});
 });
 
 var authMid = (errorOnNotAuthed = true) => {
 	return (req, res, next) => {
-		logger.reqInfo(req)
   
 		if (!req.headers.authorization || !req.headers.authorization.split(' ')[1]) {
 			if(errorOnNotAuthed){        
-				return res.send(JSON.stringify({ status: "error", error: "token not provided" }))
+				return res.send({ status: "error", error: "token not provided" })
 			}
 			else{
 				return next();
@@ -120,7 +119,7 @@ var authMid = (errorOnNotAuthed = true) => {
 		Authorized(token, (authed) =>{
 			if (authed.status != "ok") {
 				if(errorOnNotAuthed){
-					return res.send(JSON.stringify(authed))
+					return res.send(authed)
 				}
 				else{
 					return next();
