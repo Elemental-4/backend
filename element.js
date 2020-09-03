@@ -39,6 +39,32 @@ class Element {
 		})
 	}
 
+	static GetElementByName (name,result) {
+		db.GetConnection((connection) => {
+			connection.query("SELECT * FROM elements WHERE name = ?", [name], (err, res) => {
+				if (err) {
+					logger.error("error: " + err)
+					result(err, null)
+				} else {
+					result(null, res)
+				}
+			})
+		})
+	}
+
+	static GetElementById (id,result) {
+		db.GetConnection((connection) => {
+			connection.query("SELECT * FROM elements WHERE id = ?", [id], (err, res) => {
+				if (err) {
+					logger.error("error: " + err)
+					result(err, null)
+				} else {
+					result(null, res)
+				}
+			})
+		})
+	}
+
 	static GetElementsFromIdList(theArray, result){
 		if(Array.isArray(theArray) && theArray.length)
 		{
@@ -87,27 +113,23 @@ app.get("/elements", (req, res) => {
 	if(!req.userId){
 		return res.send(JSON.stringify(defaultElements));
 	}
-	else{
-		Element.GetUserOwned(req.userId, (error, theRes) =>{
-			if(error)
-				return res.send(JSON.stringify({ status: "error", error: error }));
-			
-			if(theRes.length > 0){
-				Element.GetElementsFromIdList(theRes, (error, theRes) =>{
-					if(error){
-						return res.send(JSON.stringify({ status: "error", error: error }));
-					}
-					return res.send(JSON.stringify([...defaultElements, ...theRes]));
-				})
-			}
-			else
-			{
-				return res.send(JSON.stringify(defaultElements));
-			}
-		})
-	}
-
-	//return res.send(JSON.stringify(User.GetAllElemets()))
+	Element.GetUserOwned(req.userId, (error, theRes) =>{
+		if(error)
+			return res.send({ status: "error", error: error });
+		
+		if(theRes.length > 0){
+			Element.GetElementsFromIdList(theRes, (error, theRes) =>{
+				if(error){
+					return res.send({ status: "error", error: error });
+				}
+				return res.send([...defaultElements, ...theRes]);
+			})
+		}
+		else
+		{
+			return res.send(defaultElements);
+		}
+	})
 })
 
 module.exports = {

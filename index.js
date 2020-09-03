@@ -20,6 +20,8 @@ app.get("/", (req, res) => {
 app.use(require("./auth").app);
 app.use(require("./notifications").app);
 app.use(require("./element").app);
+app.use(require("./recipe").app);
+
 
 app.all("/*", (req, res, next) => {
 	logger.error(req.method + " " + req.originalUrl, req);
