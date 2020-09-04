@@ -1,4 +1,4 @@
-var chai  = require("chai");
+var chai = require("chai");
 var chaiHttp = require("chai-http");
 var app = require("../index");
 // Configure chai
@@ -17,6 +17,7 @@ describe("Students", () => {
 					done();
 				});
 		});
+
 		// Test to get single student record
 		it("should get a single student record", (done) => {
 			const id = 1;
@@ -28,7 +29,7 @@ describe("Students", () => {
 					done();
 				});
 		});
-         
+
 		// Test to get single student record
 		it("should not get a single student record", (done) => {
 			const id = 5;
