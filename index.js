@@ -1,6 +1,5 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var http = require("http");
 
 var logger = require("./logger");
 
@@ -29,8 +28,9 @@ app.all("/*", (req, res, next) => {
 	return res.send("not implemented yet sorry");
 });
 
-var httpServer = http.createServer(app);
-
-httpServer.listen(80, () => {
+var port = process.env.PORT || 80;
+app.listen(port, () => {
 	console.log("Server running on http port 80");
 });
+
+export default app;
