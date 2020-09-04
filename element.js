@@ -87,7 +87,7 @@ class Element {
 
 	static GetUserOwned(userId, result){
 		db.GetConnection((connection) => {
-			connection.query("SELECT element_id FROM user_element WHERE user_id = ?", [userId], function (err, res) {
+			connection.query("SELECT element_id FROM user_element WHERE user_id = ?", [userId], (err, res) => {
 				if (err) {
 					logger.error("error: " + err)
 					result(err, null)

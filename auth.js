@@ -107,7 +107,7 @@ app.post("/register", (req, res) => {
 var authMid = (errorOnNotAuthed = true) => {
 	return (req, res, next) => {
   
-		if (!req.headers.authorization || !req.headers.authorization.split(' ')[1]) {
+		if (!req.headers.authorization || !req.headers.authorization.split(" ")[1]) {
 			if(errorOnNotAuthed){        
 				return res.send({ status: "error", error: "token not provided" })
 			}
@@ -115,7 +115,7 @@ var authMid = (errorOnNotAuthed = true) => {
 				return next();
 			}
 		}
-		var token = req.headers.authorization.split(' ')[1];
+		var token = req.headers.authorization.split(" ")[1];
 		Authorized(token, (authed) =>{
 			if (authed.status != "ok") {
 				if(errorOnNotAuthed){
