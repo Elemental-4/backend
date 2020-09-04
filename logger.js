@@ -1,7 +1,6 @@
 require("colors");
 var fs = require("fs");
 
-// eslint-disable-next-line no-undef
 var log = fs.createWriteStream(__dirname + "/server.log");
 
 function info(data, req = null) {
