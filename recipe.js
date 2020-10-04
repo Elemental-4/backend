@@ -7,7 +7,6 @@ var element = require("./element");
 var logger = require("./logger");
 var db = require("./db");
 var notification = require("./notifications");
-var config = require("./config.json");
 
 class Recipe {
 	constructor(iA, iB, output, author) {

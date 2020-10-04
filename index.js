@@ -33,4 +33,4 @@ app.listen(port, () => {
 	console.log("Server running on http port 80");
 });
 
-export default app;
+module.exports = app;
